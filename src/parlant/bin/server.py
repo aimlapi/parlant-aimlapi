@@ -276,6 +276,7 @@ class StartupError(Exception):
 
 
 NLPServiceName = Literal[
+    "aimlapi",
     "anthropic",
     "aws",
     "azure",
@@ -287,7 +288,6 @@ NLPServiceName = Literal[
     "litellm",
     "modelscope",
     "novita",
-    "aimlapi",
 ]
 
 
@@ -443,6 +443,7 @@ def load_litellm(container: Container) -> NLPService:
 
 
 NLP_SERVICE_INITIALIZERS: dict[NLPServiceName, Callable[[Container], NLPService]] = {
+    "aimlapi": load_aimlapi,
     "anthropic": load_anthropic,
     "aws": load_aws,
     "azure": load_azure,
@@ -454,7 +455,6 @@ NLP_SERVICE_INITIALIZERS: dict[NLPServiceName, Callable[[Container], NLPService]
     "litellm": load_litellm,
     "modelscope": load_modelscope,
     "novita": load_novita,
-    "aimlapi": load_aimlapi,
 }
 
 
@@ -1187,6 +1187,12 @@ def main() -> None:
         help="Server port",
     )
     @click.option(
+        "--aimlapi",
+        is_flag=True,
+        help="Run with aimlapi.com. The environment variable AIMLAPI_API_KEY must be set.",
+        default=False,
+    )
+    @click.option(
         "--openai",
         is_flag=True,
         help="Run with OpenAI. The environment variable OPENAI_API_KEY must be set",
@@ -1250,12 +1256,6 @@ def main() -> None:
         "--novita",
         is_flag=True,
         help="Run with Novita AI. The environment variable NOVITA_API_KEY must be set.",
-        default=False,
-    )
-    @click.option(
-        "--aimlapi",
-        is_flag=True,
-        help="Run with aimlapi.com. The environment variable AIMLAPI_API_KEY must be set.",
         default=False,
     )
     @click.option(
