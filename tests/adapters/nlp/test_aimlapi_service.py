@@ -150,7 +150,7 @@ def test_that_referer_and_title_can_be_overridden_by_the_host_application() -> N
         assert headers["HTTP-Referer"] == "https://myapp.example"
         assert headers["X-Title"] == "My App"
         # Attribution itself is not overridable by the host.
-        assert headers["X-AIMLAPI-Partner-ID"] == "part_parlant"
+        assert headers["X-AIMLAPI-Partner-ID"] == "part_UOT3mCwOdpOUQKX2gIvYrCmv"
 
 
 @patch("parlant.adapters.nlp.aimlapi_service.AsyncClient")
@@ -167,7 +167,7 @@ def test_that_the_client_is_created_against_aimlapi_with_attribution_headers(
 
     call_kwargs = mock_client_class.call_args[1]
     assert call_kwargs["base_url"] == AIMLAPI_BASE_URL
-    assert call_kwargs["default_headers"]["X-AIMLAPI-Partner-ID"] == "part_parlant"
+    assert call_kwargs["default_headers"]["X-AIMLAPI-Partner-ID"] == "part_UOT3mCwOdpOUQKX2gIvYrCmv"
     assert call_kwargs["default_headers"]["X-AIMLAPI-Source"] == "agent/parlant"
 
 

@@ -95,7 +95,7 @@ _ATTRIBUTION_HEADERS: Mapping[str, str] = MappingProxyType(
         # HTTP-Referer and X-Title identify the *calling* application, not the provider.
         "HTTP-Referer": "https://github.com/emcie-co/parlant",
         "X-Title": "Parlant",
-        "X-AIMLAPI-Partner-ID": "part_parlant",
+        "X-AIMLAPI-Partner-ID": "part_UOT3mCwOdpOUQKX2gIvYrCmv",
         "X-AIMLAPI-Source": "agent/parlant",
     }
 )
