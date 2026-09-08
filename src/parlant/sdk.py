@@ -371,6 +371,18 @@ class NLPServices:
         )
 
     @staticmethod
+    def aimlapi(container: Container) -> NLPService:
+        """Creates an aimlapi.com NLPService instance using the provided container."""
+        from parlant.adapters.nlp.aimlapi_service import AIMLAPIService
+
+        if error := AIMLAPIService.verify_environment():
+            raise NLPServiceConfigurationError(error)
+
+        return AIMLAPIService(
+            container[Logger], container[Tracer], container[Meter], container[HealthReporter]
+        )
+
+    @staticmethod
     def azure(container: Container) -> NLPService:
         """Creates an Azure NLPService instance using the provided container."""
         from parlant.adapters.nlp.azure_service import AzureService

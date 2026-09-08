@@ -276,6 +276,7 @@ class StartupError(Exception):
 
 
 NLPServiceName = Literal[
+    "aimlapi",
     "anthropic",
     "aws",
     "azure",
@@ -410,6 +411,16 @@ def load_novita(container: Container) -> NLPService:
     )
 
 
+def load_aimlapi(container: Container) -> NLPService:
+    return load_nlp_service(
+        container,
+        "aimlapi.com",
+        "aimlapi",
+        "AIMLAPIService",
+        "parlant.adapters.nlp.aimlapi_service",
+    )
+
+
 def load_litellm(container: Container) -> NLPService:
     from parlant.adapters.nlp.litellm_service import LiteLLMService
 
@@ -432,6 +443,7 @@ def load_litellm(container: Container) -> NLPService:
 
 
 NLP_SERVICE_INITIALIZERS: dict[NLPServiceName, Callable[[Container], NLPService]] = {
+    "aimlapi": load_aimlapi,
     "anthropic": load_anthropic,
     "aws": load_aws,
     "azure": load_azure,
@@ -1175,6 +1187,12 @@ def main() -> None:
         help="Server port",
     )
     @click.option(
+        "--aimlapi",
+        is_flag=True,
+        help="Run with aimlapi.com. The environment variable AIMLAPI_API_KEY must be set.",
+        default=False,
+    )
+    @click.option(
         "--openai",
         is_flag=True,
         help="Run with OpenAI. The environment variable OPENAI_API_KEY must be set",
@@ -1300,6 +1318,7 @@ def main() -> None:
         cerebras: bool,
         together: bool,
         novita: bool,
+        aimlapi: bool,
         litellm: bool,
         modelscope: bool,
         log_level: str,
@@ -1323,6 +1342,7 @@ def main() -> None:
                     cerebras,
                     together,
                     novita,
+                    aimlapi,
                     litellm,
                     modelscope,
                 ]
@@ -1342,6 +1362,7 @@ def main() -> None:
                 cerebras,
                 together,
                 novita,
+                aimlapi,
                 litellm,
                 modelscope,
             )
@@ -1377,6 +1398,9 @@ def main() -> None:
         elif novita:
             nlp_service = "novita"
             require_env_keys(["NOVITA_API_KEY"])
+        elif aimlapi:
+            nlp_service = "aimlapi"
+            require_env_keys(["AIMLAPI_API_KEY"])
         elif litellm:
             nlp_service = "litellm"
             require_env_keys(["LITELLM_PROVIDER_MODEL_NAME"])
